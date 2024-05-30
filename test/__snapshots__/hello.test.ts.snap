@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hello 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "LambdaFunctionInvokeErrorCatchRule70C95FF4": {
+      "Properties": {
+        "EventPattern": {
+          "detail": {
+            "errorCode": [
+              {
+                "exists": true,
+              },
+            ],
+            "eventName": [
+              "Invoke",
+            ],
+            "eventSource": [
+              "lambda.amazonaws.com",
+            ],
+          },
+          "detail-type": [
+            "AWS API Call via CloudTrail",
+          ],
+          "source": [
+            "aws.lambda",
+          ],
+        },
+        "Name": "lambda-func-invoke-error-catch-38c73628-rule",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "LambdaFunctionInvokeErrorNotificationTopic54C7E386",
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "LambdaFunctionInvokeErrorNotificationTopic54C7E386": {
+      "Properties": {
+        "DisplayName": "Lambda Functions Invoke Error Notification Topic",
+        "TopicName": "lambda-funcs-invoke-error-notification-38c73628-topic",
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "LambdaFunctionInvokeErrorNotificationTopicPolicy5432DF1F": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": {
+                "Ref": "LambdaFunctionInvokeErrorNotificationTopic54C7E386",
+              },
+              "Sid": "0",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": [
+          {
+            "Ref": "LambdaFunctionInvokeErrorNotificationTopic54C7E386",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+    "LambdaFunctionInvokeErrorNotificationTopicfooexamplecom3EFA0BE4": {
+      "Properties": {
+        "Endpoint": "foo@example.com",
+        "Protocol": "email",
+        "TopicArn": {
+          "Ref": "LambdaFunctionInvokeErrorNotificationTopic54C7E386",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
