@@ -38,12 +38,14 @@ export class LambdaFunctionInvokeErrorNotificationStack extends cdk.Stack {
     new events.Rule(this, 'LambdaFunctionInvokeErrorCatchRule', {
       ruleName: `lambda-func-invoke-error-catch-${random}-rule`,
       eventPattern: {
-        source: ['aws.lambda'],
-        detailType: ['AWS API Call via CloudTrail'],
+        source: ['lambda'],
+        detailType: ['Lambda Function Invocation Result - Failure'],
         detail: {
-          eventSource: ['lambda.amazonaws.com'],
-          eventName: ['Invoke'],
-          errorCode: [{ exists: true }],
+          responsePayload: {
+            errorType: [
+              'error',
+            ],
+          },
         },
       },
       targets: [

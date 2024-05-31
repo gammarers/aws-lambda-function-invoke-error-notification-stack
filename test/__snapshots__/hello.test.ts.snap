@@ -14,23 +14,17 @@ exports[`hello 1`] = `
       "Properties": {
         "EventPattern": {
           "detail": {
-            "errorCode": [
-              {
-                "exists": true,
-              },
-            ],
-            "eventName": [
-              "Invoke",
-            ],
-            "eventSource": [
-              "lambda.amazonaws.com",
-            ],
+            "responsePayload": {
+              "errorType": [
+                "error",
+              ],
+            },
           },
           "detail-type": [
-            "AWS API Call via CloudTrail",
+            "Lambda Function Invocation Result - Failure",
           ],
           "source": [
-            "aws.lambda",
+            "lambda",
           ],
         },
         "Name": "lambda-func-invoke-error-catch-38c73628-rule",
