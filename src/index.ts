@@ -42,7 +42,7 @@ export class LambdaFunctionInvokeErrorNotificationStack extends cdk.Stack {
           sfn.JsonPath.stringAt('$.account'),
           sfn.JsonPath.stringAt('$.region'),
         ),
-        Message: sfn.JsonPath.format('Account : {}\nRegion : {}\nFunction : {}\nErrorMessage : {}\nTrace : {}',
+        Message: sfn.JsonPath.format('Account : {}\nRegion : {}\nFunction : {}\nErrorMessage : {}\nTrace : \n{}',
           sfn.JsonPath.stringAt('$.account'),
           sfn.JsonPath.stringAt('$.region'),
           sfn.JsonPath.stringAt('$.detail.requestContext.functionArn'),
@@ -82,7 +82,7 @@ export class LambdaFunctionInvokeErrorNotificationStack extends cdk.Stack {
 
     const concatenateValue: sfn.Pass = new sfn.Pass(this, 'Concatenate', {
       parameters: {
-        Trace: sfn.JsonPath.format('{}{}', sfn.JsonPath.stringAt('$.Prepare.Concatenated.Trace'), sfn.JsonPath.stringAt('$.Temp.GetTrace.Line')),
+        Trace: sfn.JsonPath.format('{}{}\n', sfn.JsonPath.stringAt('$.Prepare.Concatenated.Trace'), sfn.JsonPath.stringAt('$.Temp.GetTrace.Line')),
       },
       resultPath: '$.Prepare.Concatenated',
     });
