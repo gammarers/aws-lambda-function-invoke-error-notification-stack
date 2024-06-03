@@ -14,6 +14,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // devDeps: [],             /* Build dependencies for this module. */
   // packageName: undefined,  /* The "name" in package.json. */
-  releaseToNpm: false,
+  releaseToNpm: false, // temporary
+  depsUpgrade: false, // temporary
 });
 project.synth();
