@@ -47,11 +47,58 @@ export class LambdaFunctionInvokeErrorNotificationStack extends cdk.Stack {
           sfn.JsonPath.stringAt('$.region'),
           sfn.JsonPath.stringAt('$.detail.requestContext.functionArn'),
           sfn.JsonPath.stringAt('$.detail.responsePayload.errorMessage'),
-          sfn.JsonPath.stringAt('$.detail.responsePayload.trace'),
+          sfn.JsonPath.stringAt('$.Prepare.Concatenated.Trace'),
         ),
       },
       resultPath: '$.Prepare.Sns.Topic',
     });
+
+    const init: sfn.Pass = new sfn.Pass(this, 'Init', {
+      result: sfn.Result.fromString(''),
+      resultPath: '$.Prepare.Concatenated.Trace',
+    });
+
+    const traceLinces: sfn.Pass = new sfn.Pass(this, 'TraceLinces', {
+      parameters: {
+        Lines: sfn.JsonPath.stringAt('$.detail.responsePayload.trace'),
+      },
+      resultPath: '$.TempTrace',
+    });
+
+    init.next(traceLinces);
+
+    const getTraceLine = new sfn.Pass(this, 'GetTraceLine', {
+      parameters: {
+        Line: sfn.JsonPath.arrayGetItem(sfn.JsonPath.stringAt('$.TempTrace.Lines'), 0),
+      },
+      resultPath: '$.Temp.GetTrace',
+    });
+
+    const checkUntreatedTranceLinesExist: sfn.Choice = new sfn.Choice(this, 'CheckUntreatedTranceLinesExist')
+      .when(sfn.Condition.isPresent('$.TempTrace.Lines[0]'), getTraceLine)
+      .otherwise(prepareMessage);
+
+    traceLinces.next(checkUntreatedTranceLinesExist);
+
+    const concatenateValue: sfn.Pass = new sfn.Pass(this, 'Concatenate', {
+      parameters: {
+        Trace: sfn.JsonPath.format('{}{}', sfn.JsonPath.stringAt('$.Prepare.Concatenated.Trace'), sfn.JsonPath.stringAt('$.Temp.GetTrace.Line')),
+      },
+      resultPath: '$.Prepare.Concatenated',
+    });
+
+    getTraceLine.next(concatenateValue);
+
+    const untreatedTranceLines: sfn.Pass = new sfn.Pass(this, 'UntreatedTranceLines', {
+      parameters: {
+        Lines: sfn.JsonPath.stringAt('$.TempTrace.Lines[1:]'),
+      },
+      resultPath: '$.TempTrace',
+    });
+
+    concatenateValue.next(untreatedTranceLines);
+
+    untreatedTranceLines.next(checkUntreatedTranceLinesExist);
 
     const sendNotification: tasks.SnsPublish = new tasks.SnsPublish(this, 'SendNotification', {
       topic: topic,
@@ -61,11 +108,13 @@ export class LambdaFunctionInvokeErrorNotificationStack extends cdk.Stack {
       resultPath: '$.Result.Sns.Topic',
     });
 
+    prepareMessage.next(sendNotification);
+
     // Step Functions State Machine
     const stateMachine: sfn.StateMachine = new sfn.StateMachine(this, 'StateMachine', {
       stateMachineName: `lambda-func-invoke-error-notification-${random}-state-machine`,
       timeout: cdk.Duration.minutes(5),
-      definitionBody: sfn.DefinitionBody.fromChainable(prepareMessage.next(sendNotification)),
+      definitionBody: sfn.DefinitionBody.fromChainable(init),
     });
 
     // EventBridge Rule
