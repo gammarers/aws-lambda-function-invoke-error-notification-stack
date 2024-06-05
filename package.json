@@ -62,7 +62,12 @@
     "constructs": "^10.0.5"
   },
   "keywords": [
-    "cdk"
+    "aws",
+    "cdk",
+    "email",
+    "lambda",
+    "notification",
+    "stepfunctions"
   ],
   "engines": {
     "node": ">= 18.0.0"
