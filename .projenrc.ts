@@ -10,11 +10,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   name: '@gammarers/aws-lambda-function-invoke-error-notification-stack',
   projenrcTs: true,
   repositoryUrl: 'https://github.com/gammarers/aws-lambda-function-invoke-error-notification-stack.git',
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
   releaseToNpm: false, // temporary
   depsUpgrade: false, // temporary
+  minNodeVersion: '18.0.0',
 });
 project.synth();
