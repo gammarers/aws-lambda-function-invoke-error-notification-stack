@@ -1,4 +1,4 @@
-import { awscdk } from 'projen';
+import { awscdk, javascript } from 'projen';
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'yicr',
   authorAddress: 'yicr@users.noreply.github.com',
@@ -8,13 +8,25 @@ const project = new awscdk.AwsCdkConstructLibrary({
   typescriptVersion: '5.3.x',
   jsiiVersion: '5.3.x',
   name: '@gammarers/aws-lambda-function-invoke-error-notification-stack',
+  description: 'AWS Lambda function invoke error notification Stack',
+  keywords: ['aws', 'cdk', 'lambda', 'stepfunctions', 'notification', 'email'],
   projenrcTs: true,
   repositoryUrl: 'https://github.com/gammarers/aws-lambda-function-invoke-error-notification-stack.git',
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
-  releaseToNpm: false, // temporary
-  depsUpgrade: false, // temporary
+  majorVersion: 1,
+  releaseToNpm: true,
+  npmAccess: javascript.NpmAccess.PUBLIC,
+  depsUpgrade: true,
+  depsUpgradeOptions: {
+    workflowOptions: {
+      labels: ['auto-approve', 'auto-merge'],
+      schedule: javascript.UpgradeDependenciesSchedule.expressions(['0 18 * * 5']), // every sunday (JST/MON:03:00)
+    },
+  },
+  minNodeVersion: '18.0.0',
+  workflowNodeVersion: '22.2.0',
+  autoApproveOptions: {
+    secret: 'GITHUB_TOKEN',
+    allowedUsernames: ['yicr'],
+  },
 });
 project.synth();

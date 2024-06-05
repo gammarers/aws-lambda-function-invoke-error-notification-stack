@@ -1,5 +1,6 @@
 {
   "name": "@gammarers/aws-lambda-function-invoke-error-notification-stack",
+  "description": "AWS Lambda function invoke error notification Stack",
   "repository": {
     "type": "git",
     "url": "https://github.com/gammarers/aws-lambda-function-invoke-error-notification-stack.git"
@@ -16,12 +17,15 @@
     "eslint": "npx projen eslint",
     "package": "npx projen package",
     "package-all": "npx projen package-all",
+    "package:js": "npx projen package:js",
     "post-compile": "npx projen post-compile",
+    "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
     "release": "npx projen release",
     "test": "npx projen test",
     "test:watch": "npx projen test:watch",
     "unbump": "npx projen unbump",
+    "upgrade": "npx projen upgrade",
     "watch": "npx projen watch",
     "projen": "npx projen"
   },
@@ -58,10 +62,21 @@
     "constructs": "^10.0.5"
   },
   "keywords": [
-    "cdk"
+    "aws",
+    "cdk",
+    "email",
+    "lambda",
+    "notification",
+    "stepfunctions"
   ],
+  "engines": {
+    "node": ">= 18.0.0"
+  },
   "main": "lib/index.js",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.0.0",
   "jest": {
     "testMatch": [
