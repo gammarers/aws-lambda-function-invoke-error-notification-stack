@@ -123,13 +123,6 @@ export class LambdaFunctionInvokeErrorNotificationStack extends cdk.Stack {
       eventPattern: {
         source: ['lambda'],
         detailType: ['Lambda Function Invocation Result - Failure'],
-        detail: {
-          responsePayload: {
-            errorType: [
-              'error',
-            ],
-          },
-        },
       },
       targets: [
         new targets.SfnStateMachine(stateMachine, {
