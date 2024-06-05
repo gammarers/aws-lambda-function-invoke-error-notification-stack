@@ -8,6 +8,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   typescriptVersion: '5.3.x',
   jsiiVersion: '5.3.x',
   name: '@gammarers/aws-lambda-function-invoke-error-notification-stack',
+  description: 'AWS Lambda function invoke error notification Stack',
   projenrcTs: true,
   repositoryUrl: 'https://github.com/gammarers/aws-lambda-function-invoke-error-notification-stack.git',
   releaseToNpm: false, // temporary

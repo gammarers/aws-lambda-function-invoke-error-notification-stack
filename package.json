@@ -1,5 +1,6 @@
 {
   "name": "@gammarers/aws-lambda-function-invoke-error-notification-stack",
+  "description": "AWS Lambda function invoke error notification Stack",
   "repository": {
     "type": "git",
     "url": "https://github.com/gammarers/aws-lambda-function-invoke-error-notification-stack.git"
